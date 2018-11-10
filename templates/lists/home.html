@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ZeroVain | To Do </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <style media="screen">
+    body {
+      background: #000;
+    }
+
+    .dark {
+      color: #ccc;
+    }
+
+    .upsize{
+      font-size: 1.1rem;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="jumbotron jumbotron-fluid bg-dark" style="border-bottom: 1px solid white">
+    <div class="container text-center">
+      <h1 class="display-4 dark"><i class="far fa-list-alt mr-4"></i>Save Time | ZeroVain</h1>
+      <hr style="background: white; width:70%">
+      <p class="lead dark mb-0">This is an elegant To-Do-List that keeps track of what you want to remember and get done !!</p>
+    </div>
+  </div>
+
+  <div class="container" style="width:45rem">
+    <h3 class="dark text-center" style="text-decoration:underline;">Reminders</h3>
+    <ul class="list-group">
+      {% for list in lists %}
+      <li class="list-group-item list-group-item-dark">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{list.head}}</h5>
+          <a href="javascript:{document.getElementById('delete').submit()}" style="color:black"><i class="far fa-times-circle" style="margin-left:auto;"></i></a>
+        </div>
+        <p class="mb-1">{{list.body}}</p>
+      </li>
+      <form action="{% url 'delete' list.id %}" method="POST" id="delete">
+        {% csrf_token %}
+        <input type="hidden">
+      </form>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="container mt-4 bg-dark p-4 mb-4" style="width:50rem; border:1px solid white">
+    <h3 class="dark text-center">Add Reminders</h3>
+    <form action="{% url 'add' %}" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="title" class="dark upsize">Title of your reminder</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Eg. Learn to play the Guitar...">
+      </div>
+      <div class="form-group">
+        <label for="body" class="dark upsize">Details of your reminder</label>
+        <textarea class="form-control" id="body" name="body" rows="2" placeholder="Eg. Practice what was done in the previous session... "></textarea>
+      </div>
+
+      <button type="submit" name="add" class="btn btn-warning btn-block">Add</button>
+    </form>
+  </div>
+
+
+  </form>
+
+</body>
+
+</html>
