@@ -21,24 +21,32 @@
       font-size: 1.1rem;
     }
 
-    .flex-container{
-      display:flex;
-      flex-wrap: wrap;
-      align-items: stretch;
-      height: 100%;
+    @media only screen and (min-width: 720px){
+      .flex-container{
+        display:flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        height: 100%;
+        text-align: center;
+        margin: auto;
+      }
+      .flex-container .left{
+        flex:3;
+        margin:1rem 2rem;
+        height: 100%;
+      }
+
+      .flex-container .right{
+        flex:2;
+        margin: 1rem 2rem;
+        height: 100%;
+      }
     }
 
-    .flex-container .left{
-      flex:2;
-      margin:0 2rem;
-      height: 100%;
+    .flex-container .left, .flex-container .right {
+      margin: 1rem auto;
     }
 
-    .flex-container .right{
-      flex:3;
-      margin-right: 2rem;
-      height: 100%;
-    }
 
   </style>
 
@@ -54,7 +62,7 @@
   </div>
 
   <div class="flex-container">
-    <div class="container left" style="width:45rem; border: 1px solid #efdb23; padding: 1rem;">
+    <div class="container left" style="width:80%; border: 1px solid #efdb23; padding: 1rem;">
       <h3 class="dark text-center">Reminders</h3>
       {% if lists %}
       <ul class="list-group">
@@ -77,7 +85,7 @@
       {% endif %}
     </div>
 
-    <div class="container bg-dark p-4 right" style="width:50rem; border:1px solid #efdb23">
+    <div class="container bg-dark p-4 right" style="width:80%; border:1px solid #efdb23">
       <h3 class="dark text-center">Add Reminders</h3>
       <form action="{% url 'add' %}" method="POST">
         {% csrf_token %}
