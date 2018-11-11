@@ -20,6 +20,26 @@
     .upsize{
       font-size: 1.1rem;
     }
+
+    .flex-container{
+      display:flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      height: 100%;
+    }
+
+    .flex-container .left{
+      flex:2;
+      margin:0 2rem;
+      height: 100%;
+    }
+
+    .flex-container .right{
+      flex:3;
+      margin-right: 2rem;
+      height: 100%;
+    }
+
   </style>
 
 </head>
@@ -33,41 +53,48 @@
     </div>
   </div>
 
-  <div class="container" style="width:45rem">
-    <h3 class="dark text-center" style="text-decoration:underline;">Reminders</h3>
-    <ul class="list-group">
-      {% for list in lists %}
-      <li class="list-group-item list-group-item-dark">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">{{list.head}}</h5>
-          <a href="javascript:{document.getElementById('delete').submit()}" style="color:black"><i class="far fa-times-circle" style="margin-left:auto;"></i></a>
-        </div>
-        <p class="mb-1">{{list.body}}</p>
-      </li>
-      <form action="{% url 'delete' list.id %}" method="POST" id="delete">
+  <div class="flex-container">
+    <div class="container left" style="width:45rem; border: 1px solid #efdb23; padding: 1rem;">
+      <h3 class="dark text-center">Reminders</h3>
+      {% if lists %}
+      <ul class="list-group">
+        {% for list in lists %}
+        <li class="list-group-item list-group-item-light mb-2">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1" style="color: #000">{{list.head}}</h5>
+            <a href="javascript:{document.getElementById('delete').submit()}" style="color:#d3c428"><i class="far fa-times-circle" style="margin-left:auto;"></i></a>
+          </div>
+          <p class="mb-1" style="color: #000">{{list.body}}</p>
+        </li>
+        <form action="{% url 'delete' list.id %}" method="POST" id="delete">
+          {% csrf_token %}
+          <input type="hidden">
+        </form>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <h2 class="dark text-center">No Reminders Added to Your ToDoList!!</h2>
+      {% endif %}
+    </div>
+
+    <div class="container bg-dark p-4 right" style="width:50rem; border:1px solid #efdb23">
+      <h3 class="dark text-center">Add Reminders</h3>
+      <form action="{% url 'add' %}" method="POST">
         {% csrf_token %}
-        <input type="hidden">
+        <div class="form-group">
+          <label for="title" class="dark upsize">Title of your reminder</label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Eg. Learn to play the Guitar...">
+        </div>
+        <div class="form-group">
+          <label for="body" class="dark upsize">Details of your reminder</label>
+          <textarea class="form-control" id="body" name="body" rows="2" placeholder="Eg. Practice what was done in the previous session... "></textarea>
+        </div>
+
+        <button type="submit" name="add" class="btn btn-warning btn-block">Add</button>
       </form>
-      {% endfor %}
-    </ul>
+    </div>
   </div>
 
-  <div class="container mt-4 bg-dark p-4 mb-4" style="width:50rem; border:1px solid white">
-    <h3 class="dark text-center">Add Reminders</h3>
-    <form action="{% url 'add' %}" method="POST">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="title" class="dark upsize">Title of your reminder</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="Eg. Learn to play the Guitar...">
-      </div>
-      <div class="form-group">
-        <label for="body" class="dark upsize">Details of your reminder</label>
-        <textarea class="form-control" id="body" name="body" rows="2" placeholder="Eg. Practice what was done in the previous session... "></textarea>
-      </div>
-
-      <button type="submit" name="add" class="btn btn-warning btn-block">Add</button>
-    </form>
-  </div>
 
 
   </form>
